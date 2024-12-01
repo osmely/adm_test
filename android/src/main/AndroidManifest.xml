@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.adm_test">
+
+    <!-- Permisos necesarios para ADM -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.amazon.device.messaging.permission.RECEIVE" />
+    
+    <!-- Permiso personalizado para recibir mensajes ADM -->
+    <permission
+        android:name="${applicationId}.permission.RECEIVE_ADM_MESSAGE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="${applicationId}.permission.RECEIVE_ADM_MESSAGE" />
+
+    <application>
+        <!-- Receptor ADM -->
+        <receiver
+            android:name=".AdmMessageReceiver"
+            android:permission="com.amazon.device.messaging.permission.SEND">
+            <intent-filter>
+                <action android:name="com.amazon.device.messaging.intent.RECEIVE" />
+                <action android:name="com.amazon.device.messaging.intent.REGISTRATION" />
+                <category android:name="${applicationId}" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Servicio ADM -->
+        <service
+            android:name=".AdmMessageReceiver$AdmMessageHandler"
+            android:exported="false" />
+    </application>
+</manifest>
